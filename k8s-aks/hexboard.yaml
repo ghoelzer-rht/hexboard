@@ -1,0 +1,55 @@
+apiVersion: v1
+kind: DeploymentConfig
+metadata:
+  labels:
+    app: hexboard
+  name: hexboard
+  namespace: hexboard
+spec:
+  replicas: 1
+  selector:
+    app: hexboard
+    deploymentconfig: hexboard
+  strategy:
+    activeDeadlineSeconds: 21600
+    resources: {}
+    rollingParams:
+      intervalSeconds: 1
+      maxSurge: 25%
+      maxUnavailable: 25%
+      timeoutSeconds: 600
+      updatePeriodSeconds: 1
+    type: Rolling
+  template:
+    metadata:
+      annotations:
+      labels:
+        app: hexboard
+        deploymentconfig: hexboard
+    spec:
+      containers:
+        - env:
+            - name: ACCESS_TOKEN
+              value: >-
+                eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJoZXhib2FyZCIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJkZWZhdWx0LXRva2VuLXZqN2NqIiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQubmFtZSI6ImRlZmF1bHQiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC51aWQiOiI4ZWUwOTEyNy0xOGNjLTExZTgtYTgzNC1iODk3NWFjNGIxMjAiLCJzdWIiOiJzeXN0ZW06c2VydmljZWFjY291bnQ6aGV4Ym9hcmQ6ZGVmYXVsdCJ9.jYXWqkaFe0uVrurwttohY4ghsNYx6iFwwpZa4pJ8UKX78r45U3T0_lltsypr8aeVvVGcxgsdrYy2KRnWdQMgNhtdS9R0oXJB6NGXtOQ4ZYroA3AOY6oGJzz0IwoxKJR5a9E7-KZSpbyprXWCCkSKKlZG23d7LVuVZly7Mz8otU9x5hJYts3cz2Rre_imkJ_lalamzki8CLvInCk4QSLtDL_d1URpyDNzaxw0ys8yfziCvgdtU7OdEQyGvaA4sY4KmWJWSHUIm4B342Fs3olmAvFfrKSQg7lA_XlzVfVhEx-Xo8NUIAv_1zesc2bEAX8CAR6FeN3PmPU8cPI1fiemdA
+            - name: HEXBOARD_SIZE
+              value: xsmall
+            - name: WINNER_COUNT
+              value: '2'
+            - name: ADMIN_TOKEN
+              value: hexboard!
+          image: ghoelzer2azure/hexboard:latest
+          imagePullPolicy: IfNotPresent
+          name: hexboard
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+
