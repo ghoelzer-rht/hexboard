@@ -5,7 +5,6 @@ metadata:
   labels:
     app: hexboard
   name: hexboard
-  namespace: hexboard
 spec:
   ports:
     - name: 8080-tcp
@@ -16,4 +15,4 @@ spec:
     app: hexboard
     deploymentconfig: hexboard
   sessionAffinity: None
-  type: ClusterIP
+  type: LoadBalancer
